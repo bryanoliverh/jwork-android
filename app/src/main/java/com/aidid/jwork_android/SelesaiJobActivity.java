@@ -172,8 +172,8 @@ public class SelesaiJobActivity extends AppCompatActivity {
                         payment_type.setText(paymentType);
                         total_fee_selesai.setText(String.valueOf(totalFee));
                         invoice_status.setText(invoiceStatus);
-                        JSONObject jsonCustomer = jsonInvoice.getJSONObject("jobseeker");
-                        jobseekerName = jsonCustomer.getString("name");
+                        JSONObject jsonREC = jsonInvoice.getJSONObject("jobseeker");
+                        jobseekerName = jsonREC.getString("name");
                         jobseeker_name.setText(jobseekerName);
 
                         JSONArray jsonJobs = jsonInvoice.getJSONArray("jobs");
