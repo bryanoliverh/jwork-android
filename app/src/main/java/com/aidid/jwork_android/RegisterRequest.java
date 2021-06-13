@@ -13,12 +13,26 @@ import java.util.Map;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+/**
+ * Class RegisterRequest
+ *
+ * @author Bryan Oliver
+ * @version 9.6.2021
+ */
 
 public class RegisterRequest extends StringRequest {
-//192.168.1.102
+//192.168.1.103
 //10.0.2.2
-    private static final String URL = "http://10.0.2.2:8080/jobseeker/register";
+    private static final String URL = "http://192.168.1.105:8080/jobseeker/register";
     private Map<String, String> params;
+
+    /**
+     * Constructor for Register Request
+     * @param name
+     * @param email
+     * @param password
+     * @param listener
+     */
     public RegisterRequest(String name, String email, String password, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
         params = new HashMap<>();
@@ -27,6 +41,11 @@ public class RegisterRequest extends StringRequest {
         params.put("password", password);
     }
 
+    /**
+     * auth failure
+     * @return
+     * @throws AuthFailureError
+     */
     @Override
     public Map<String, String> getParams() throws AuthFailureError {
         return params;

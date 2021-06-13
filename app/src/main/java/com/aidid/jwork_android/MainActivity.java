@@ -1,6 +1,7 @@
 package com.aidid.jwork_android;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.volley.RequestQueue;
@@ -12,13 +13,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
@@ -28,6 +28,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+/**
+ * Class MainActivity
+ *
+ * @author Bryan Oliver
+ * @version 9.6.2021
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,16 +44,45 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
 
+    private static int jobseekerId;
+
+    //oncreate function to look for the layout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            jobseekerId = extras.getInt("jobseekerId");
+        }
+
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         refreshList();
-    }
+//expand child in main when clicked
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener(){
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                Intent intent = new Intent(com.aidid.jwork_android.MainActivity.this, ApplyJobActivity.class);
+                int jobId = childMapping.get(listRecruiter.get(i)).get(i1).getId();
+                String jobName = childMapping.get(listRecruiter.get(i)).get(i1).getName();
+                String jobCategory = childMapping.get(listRecruiter.get(i)).get(i1).getCategory();
+                int jobFee = childMapping.get(listRecruiter.get(i)).get(i1).getFee();
 
+                intent.putExtra("job_id", jobId);
+                intent.putExtra("job_name", jobName);
+                intent.putExtra("job_category", jobCategory);
+                intent.putExtra("job_fee", jobFee);
+
+                intent.putExtra("jobseekerId", jobseekerId);
+
+                startActivity(intent);
+                return true;
+            }
+        });
+    }
+//using refreshlist to display object
     protected void refreshList(){
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -113,5 +148,17 @@ public class MainActivity extends AppCompatActivity {
         MenuRequest menuRequest = new MenuRequest(responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
+
+        Button btnAppliedJob = findViewById(R.id.btnApplyJob);
+        btnAppliedJob.setOnClickListener(new View.OnClickListener() {
+        //applied job clicked to selesai job
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelesaiJobActivity.class);
+                intent.putExtra("jobseekerId", jobseekerId);
+
+                startActivity(intent);
+            }
+        });
     }
 }

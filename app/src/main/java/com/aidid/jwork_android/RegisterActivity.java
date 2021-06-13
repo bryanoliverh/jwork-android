@@ -3,6 +3,7 @@ package com.aidid.jwork_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,19 +17,28 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+/**
+ * Class RegisterActivity
+ *
+ * @author Bryan Oliver
+ * @version 9.6.2021
+ */
 
 public class RegisterActivity extends AppCompatActivity {
-
+    //oncreate function
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // define variable based on layout
         setContentView(R.layout.activity_register);
 
         EditText etName = findViewById(R.id.etName);
         EditText etEmail = findViewById(R.id.etEmail);
         EditText etPassword = findViewById(R.id.etPassword);
         Button btnRegister = findViewById(R.id.btnRegister);
+        TextView tvLogin = findViewById(R.id.login_now);
 
+        //register button function
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +67,13 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-
-    }
+        // login to go to login page
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+}
 }

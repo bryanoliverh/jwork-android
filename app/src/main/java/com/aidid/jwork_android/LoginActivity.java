@@ -1,4 +1,5 @@
 package com.aidid.jwork_android;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,20 +16,26 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+/**
+ * Class LoginActivity
+ *
+ * @author Bryan Oliver
+ * @version 9.6.2021
+ */
 
 public class LoginActivity extends AppCompatActivity {
-
-
+//oncreate function
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //initiate variables based on their location in layout
         setContentView(R.layout.activity_login);
+        EditText etEmail = findViewById(R.id.et_email);
+        EditText etPassword = findViewById(R.id.et_password);
+        Button btnLogin = findViewById(R.id.btn_login);
+        TextView tvRegister = findViewById(R.id.tv_register);
 
-        EditText etEmail = findViewById(R.id.etEmaillogin);
-        EditText etPassword = findViewById(R.id.etPasswordlogin);
-        Button btnLogin = findViewById(R.id.btnLogin);
-        TextView tvRegister = findViewById(R.id.tvRegister);
-
+        //login button function
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (jsonObject != null) {
                                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                 Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                loginIntent.putExtra("jobseekerId", jsonObject.getInt("id"));
+                                loginIntent.addFlags(loginIntent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(loginIntent);
                                 finish();
                             }
@@ -59,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
                 queue.add(loginRequest);
             }
         });
-
+//refister button to move to register page
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
